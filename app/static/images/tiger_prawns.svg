@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF8C42;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E63946;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="#f0f0f0"/>
+  <ellipse cx="150" cy="140" rx="80" ry="70" fill="url(#grad2)"/>
+  <circle cx="120" cy="110" r="10" fill="#000"/>
+  <path d="M 150 210 L 130 240" stroke="#E63946" stroke-width="4" fill="none"/>
+  <path d="M 150 210 L 170 240" stroke="#E63946" stroke-width="4" fill="none"/>
+  <path d="M 70 140 Q 40 120 30 150" stroke="#E63946" stroke-width="3" fill="none"/>
+  <path d="M 230 140 Q 260 120 270 150" stroke="#E63946" stroke-width="3" fill="none"/>
+  <path d="M 80 100 Q 60 80 50 100" stroke="#E63946" stroke-width="2" fill="none"/>
+  <text x="150" y="280" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Tiger Prawns</text>
+</svg>

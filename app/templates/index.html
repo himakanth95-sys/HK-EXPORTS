@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Shop - HK Exports{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="jumbotron bg-light p-4 rounded">
+            <h1 class="display-4">🦐 Welcome to HK Exports</h1>
+            <p class="lead">Premium quality prawns and fresh fish directly from our suppliers.</p>
+            <hr class="my-4">
+            <p>Explore our selection of high-quality seafood products. Best prices guaranteed!</p>
+        </div>
+    </div>
+</div>
+
+{% if products %}
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm hover-card product-card">
+            {% if product['image_url'] %}
+            <div class="product-image-container">
+                <img src="{{ product['image_url'] }}" alt="{{ product['name'] }}" class="card-img-top product-image">
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title">{{ product['name'] }}</h5>
+                    <span class="badge bg-primary">{{ product['category'] }}</span>
+                </div>
+                <p class="card-text text-muted small">{{ product['description'] or 'Premium quality product' }}</p>
+                <p class="card-text mt-3">
+                    <strong class="text-success fs-5">৳ {{ "%.2f"|format(product['price']) }}</strong>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">
+                        {% if product['stock'] > 0 %}
+                            <span class="badge bg-success">{{ product['stock'] }} in stock</span>
+                        {% else %}
+                            <span class="badge bg-danger">Out of stock</span>
+                        {% endif %}
+                    </small>
+                </p>
+            </div>
+            <div class="card-footer bg-white border-top-0">
+                <a href="{{ url_for('main.product_detail', product_id=product['id']) }}" class="btn btn-sm btn-outline-primary w-100">
+                    View & Order
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info text-center py-5">
+    <h5>No products available at the moment.</h5>
+    <p>Please check back soon!</p>
+</div>
+{% endif %}
+{% endblock %}

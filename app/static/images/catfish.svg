@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="grad6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#654321;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="#f0f0f0"/>
+  <ellipse cx="150" cy="140" rx="75" ry="60" fill="url(#grad6)"/>
+  <circle cx="120" cy="105" r="8" fill="#000"/>
+  <path d="M 150 200 L 130 250" stroke="#654321" stroke-width="3" fill="none"/>
+  <path d="M 150 200 L 170 250" stroke="#654321" stroke-width="3" fill="none"/>
+  <path d="M 75 140 Q 45 125 35 155" stroke="#654321" stroke-width="2" fill="none"/>
+  <path d="M 225 140 Q 255 125 265 155" stroke="#654321" stroke-width="2" fill="none"/>
+  <text x="150" y="280" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Catfish (Pabda)</text>
+</svg>

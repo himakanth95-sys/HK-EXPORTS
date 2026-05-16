@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product['name'] }} - HK Exports{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            {% if product['image_url'] %}
+            <div class="product-detail-image">
+                <img src="{{ product['image_url'] }}" alt="{{ product['name'] }}" class="img-fluid">
+            </div>
+            {% endif %}
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-body p-5 bg-light">
+                <h3 class="mb-4">{{ product['name'] }}</h3>
+                <div class="mb-4">
+                    <span class="badge bg-primary me-2">{{ product['category'] }}</span>
+                    {% if product['stock'] > 0 %}
+                        <span class="badge bg-success">{{ product['stock'] }} Available</span>
+                    {% else %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                    {% endif %}
+                </div>
+                <p class="lead text-success">৳ {{ "%.2f"|format(product['price']) }} per unit</p>
+                <p class="text-muted">{{ product['description'] or 'Premium quality seafood product' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Place Your Order</h5>
+            </div>
+            <div class="card-body">
+                {% if product['stock'] > 0 %}
+                <form method="POST" action="{{ url_for('main.place_order') }}" id="orderForm">
+                    <div class="mb-3">
+                        <label for="buyer_name" class="form-label">Your Name *</label>
+                        <input type="text" class="form-control" id="buyer_name" name="buyer_name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="buyer_email" class="form-label">Email Address *</label>
+                        <input type="email" class="form-control" id="buyer_email" name="buyer_email" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="qty" class="form-label">Quantity (Units) *</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="qty" name="qty" 
+                                   min="1" max="{{ product['stock'] }}" value="1" required>
+                            <span class="input-group-text">max: {{ product['stock'] }}</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Total Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text">৳</span>
+                            <input type="text" class="form-control" id="totalPrice" 
+                                   value="{{ "%.2f"|format(product['price']) }}" readonly>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="item_id" value="{{ product['id'] }}">
+                    <button type="submit" class="btn btn-success w-100 btn-lg">
+                        📦 Place Order
+                    </button>
+                </form>
+
+                <script>
+                    const unitPrice = {{ product['price'] }};
+                    const qtyInput = document.getElementById('qty');
+                    const totalPriceInput = document.getElementById('totalPrice');
+
+                    qtyInput.addEventListener('change', function() {
+                        totalPriceInput.value = (unitPrice * this.value).toFixed(2);
+                    });
+                </script>
+                {% else %}
+                <div class="alert alert-danger">
+                    <h5>Out of Stock</h5>
+                    <p>This product is currently unavailable. Please check back later.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <a href="{{ url_for('main.home') }}" class="btn btn-outline-secondary">
+            ← Back to Shop
+        </a>
+    </div>
+</div>
+{% endblock %}

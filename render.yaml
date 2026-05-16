@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: hk-exports
+    env: python
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn run:app --bind 0.0.0.0:$PORT --workers 2 --log-level info
+    envVars:
+      - key: DATABASE_PATH
+        value: hk_exports.db
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_DEBUG
+        value: 0

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - HK Exports{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 mt-5">
+            <div class="card-header bg-dark text-white text-center py-4">
+                <h3 class="mb-0">🔐 Admin Login</h3>
+                <small class="text-muted">HK Exports Management</small>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('auth.login') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" 
+                               placeholder="Enter username" required autofocus>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" 
+                               placeholder="Enter password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">
+                        Login
+                    </button>
+                </form>
+
+                <hr>
+                <p class="text-center text-muted small mb-0">
+                    <a href="{{ url_for('main.home') }}" class="text-decoration-none">← Back to Home</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="alert alert-info mt-3" role="alert">
+            <small>
+                <strong>Demo Credentials:</strong><br>
+                Username: admin<br>
+                Password: hk123
+            </small>
+        </div>
+    </div>
+</div>
+{% endblock %}

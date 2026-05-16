@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - HK Exports{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>📊 Admin Dashboard</h2>
+    <span class="badge bg-info">Welcome, {{ session.get('username', 'Admin') }}!</span>
+</div>
+
+<!-- Stats Row -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Total Products</h6>
+                <h3 class="text-primary">{{ stats['total_products'] or 0 }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Total Stock</h6>
+                <h3 class="text-success">{{ stats['total_stock'] or 0 }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Total Orders</h6>
+                <h3 class="text-warning">{{ orders_stats['total_orders'] or 0 }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Units Sold</h6>
+                <h3 class="text-info">{{ orders_stats['total_quantity'] or 0 }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="products-tab" data-bs-toggle="tab" 
+                data-bs-target="#products" type="button">Products</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="orders-tab" data-bs-toggle="tab" 
+                data-bs-target="#orders" type="button">Orders</button>
+    </li>
+</ul>
+
+<!-- Tab Content -->
+<div class="tab-content" id="adminTabContent">
+    <!-- Products Tab -->
+    <div class="tab-pane fade show active" id="products" role="tabpanel">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0">➕ Add New Product</h6>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.add_product') }}">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <input type="text" class="form-control" name="name" 
+                                   placeholder="Product Name" required>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <input type="text" class="form-control" name="category" 
+                                   placeholder="Category" required>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <input type="number" class="form-control" name="price" 
+                                   placeholder="Price" step="0.01" required>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <input type="number" class="form-control" name="stock" 
+                                   placeholder="Stock" required>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <input type="text" class="form-control" name="image_url" 
+                                   placeholder="Image URL">
+                        </div>
+                        <div class="col-md-1 mb-3">
+                            <button type="submit" class="btn btn-success w-100">Add</button>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <input type="text" class="form-control" name="description" 
+                                   placeholder="Description">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h6 class="mb-0">📦 Inventory</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price (৳)</th>
+                            <th>Stock</th>
+                            <th>Added</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if products %}
+                            {% for product in products %}
+                            <tr>
+                                <td>{{ product['id'] }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {% if product['image_url'] %}
+                                            <img src="{{ product['image_url'] }}" alt="{{ product['name'] }}" style="width: 40px; height: 40px; margin-right: 10px; object-fit: cover; border-radius: 4px;">
+                                        {% endif %}
+                                        <strong>{{ product['name'] }}</strong>
+                                    </div>
+                                </td>
+                                <td><span class="badge bg-light text-dark">{{ product['category'] }}</span></td>
+                                <td>{{ "%.2f"|format(product['price']) }}</td>
+                                <td>
+                                    {% if product['stock'] > 50 %}
+                                        <span class="badge bg-success">{{ product['stock'] }}</span>
+                                    {% elif product['stock'] > 10 %}
+                                        <span class="badge bg-warning">{{ product['stock'] }}</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">{{ product['stock'] }}</span>
+                                    {% endif %}
+                                </td>
+                                <td><small class="text-muted">{{ product['created_at'][:10] if product['created_at'] else 'N/A' }}</small></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" 
+                                            data-bs-target="#editModal{{ product['id'] }}">Edit</button>
+                                    <form method="POST" action="{{ url_for('admin.delete_product', product_id=product['id']) }}" 
+                                          style="display:inline;" onsubmit="return confirm('Delete this product?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                            <!-- Edit Modal -->
+                            <div class="modal fade" id="editModal{{ product['id'] }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit Product</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <form method="POST" action="{{ url_for('admin.edit_product', product_id=product['id']) }}">
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Name</label>
+                                                    <input type="text" class="form-control" name="name" 
+                                                           value="{{ product['name'] }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Category</label>
+                                                    <input type="text" class="form-control" name="category" 
+                                                           value="{{ product['category'] }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Price</label>
+                                                    <input type="number" class="form-control" name="price" 
+                                                           value="{{ product['price'] }}" step="0.01" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Stock</label>
+                                                    <input type="number" class="form-control" name="stock" 
+                                                           value="{{ product['stock'] }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Image URL</label>
+                                                    <input type="text" class="form-control" name="image_url" 
+                                                           value="{{ product['image_url'] or '' }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Description</label>
+                                                    <input type="text" class="form-control" name="description" 
+                                                           value="{{ product['description'] or '' }}">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">No products yet. Add your first product!</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Tab -->
+    <div class="tab-pane fade" id="orders" role="tabpanel">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h6 class="mb-0">📋 Recent Orders</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Email</th>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if orders %}
+                            {% for order in orders %}
+                            <tr>
+                                <td><strong>#{{ order['id'] }}</strong></td>
+                                <td>{{ order['buyer_name'] }}</td>
+                                <td><small class="text-muted">{{ order['buyer_email'] }}</small></td>
+                                <td>{{ order['product_name'] }}</td>
+                                <td><span class="badge bg-info">{{ order['quantity'] }}</span></td>
+                                <td><small>{{ order['order_date'][:10] }}</small></td>
+                                <td>
+                                    <span class="badge 
+                                        {% if order['status'] == 'completed' %}bg-success
+                                        {% elif order['status'] == 'processing' %}bg-primary
+                                        {% elif order['status'] == 'cancelled' %}bg-danger
+                                        {% else %}bg-warning{% endif %}">
+                                        {{ order['status'] }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('admin.update_order_status', order_id=order['id']) }}" 
+                                          style="display:inline;">
+                                        <select name="status" class="form-select form-select-sm" 
+                                                onchange="this.form.submit()">
+                                            <option value="pending" {% if order['status'] == 'pending' %}selected{% endif %}>Pending</option>
+                                            <option value="processing" {% if order['status'] == 'processing' %}selected{% endif %}>Processing</option>
+                                            <option value="completed" {% if order['status'] == 'completed' %}selected{% endif %}>Completed</option>
+                                            <option value="cancelled" {% if order['status'] == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">No orders yet.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

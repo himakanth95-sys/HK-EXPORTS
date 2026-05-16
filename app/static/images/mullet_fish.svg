@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="grad9" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#20B2AA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#008080;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="#f0f0f0"/>
+  <ellipse cx="150" cy="140" rx="85" ry="70" fill="url(#grad9)"/>
+  <circle cx="110" cy="100" r="11" fill="#000"/>
+  <path d="M 150 210 L 135 260" stroke="#008080" stroke-width="3" fill="none"/>
+  <path d="M 150 210 L 165 260" stroke="#008080" stroke-width="3" fill="none"/>
+  <path d="M 65 130 Q 35 115 25 145" stroke="#008080" stroke-width="3" fill="none"/>
+  <path d="M 235 130 Q 265 115 275 145" stroke="#008080" stroke-width="3" fill="none"/>
+  <text x="150" y="280" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Mullet Fish</text>
+</svg>
