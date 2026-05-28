@@ -1,164 +1,216 @@
-# HK Exports - Flask E-Commerce Application
+# HK Exports - Seafood Export Platform
 
-A modern, secure, and professional Flask-based e-commerce platform for managing and selling seafood products (prawns and fish).
+A comprehensive e-commerce platform for HK EXPORTS, specializing in premium seafood products including prawns, shrimp, fish, crab, lobster, and squid.
 
-## 🚀 Features
+## 🌊 Project Overview
 
-- **Customer Portal**: Browse products, view details, and place orders
-- **Admin Dashboard**: Manage products, inventory, and orders with real-time statistics
-- **Secure Authentication**: Password-hashed admin login with session management
-- **Database**: SQLite with proper schema and relationships
-- **Responsive Design**: Mobile-friendly Bootstrap 5 UI
-- **Security Features**:
-  - CSRF protection
-  - Password hashing
-  - Session cookies with security flags
-  - SQL injection protection via parameterized queries
-  - Input validation and error handling
-- **Professional Code Structure**:
-  - Blueprints for organized routing
-  - Configuration management
-  - Separation of concerns (routes, database, config)
+This project includes both:
+1. **Frontend Website** (`index.html`, `styles.css`, `script.js`) - Modern responsive website
+2. **Flask Backend** - E-commerce application with admin dashboard
 
-## 📋 Requirements
+---
+
+## 📦 Frontend Website
+
+A beautiful, responsive front-end website for the HK EXPORTS startup.
+
+### Frontend Features
+
+- ✅ **Responsive Design** - Mobile, tablet, and desktop friendly
+- ✅ **Modern UI/UX** - Professional design with smooth animations
+- ✅ **Product Showcase** - 6 premium seafood products displayed
+- ✅ **About Section** - Company information and credentials
+- ✅ **Contact Form** - Easy inquiry submission
+- ✅ **Navigation** - Sticky header with smooth scrolling
+- ✅ **Social Integration** - Social media links in footer
+
+### Frontend Sections
+
+1. **Navigation Bar** - Sticky header with mobile menu
+2. **Hero Section** - Eye-catching landing area
+3. **Products Gallery** - 
+   - Premium Prawns
+   - Fresh Shrimp
+   - Assorted Fish
+   - Fresh Crab
+   - Premium Lobster
+   - Squid & Octopus
+4. **Features Section** - Key advantages of HK EXPORTS
+5. **About Section** - Company background
+6. **Contact Section** - Contact info and inquiry form
+7. **Footer** - Quick links and social media
+
+### Frontend File Structure
+
+```
+HK-EXPORTS/
+├── index.html       # Main website HTML
+├── styles.css       # Complete styling and responsive design
+├── script.js        # Interactive functionality
+└── README.md        # This file
+```
+
+### Quick Start (Frontend Only)
+
+1. Open `index.html` in your browser
+2. That's it! No build process needed
+3. Fully functional with no dependencies
+
+### Frontend Customization
+
+**Update Company Info** in `index.html`:
+- Address, phone, email
+- Social media links
+- Business hours
+- Company description
+
+**Add Products**:
+Copy and modify the product card structure in the Products section
+
+**Change Colors** in `styles.css`:
+```css
+:root {
+    --primary-color: #0066cc;
+    --secondary-color: #ff6b6b;
+    --accent-color: #1abc9c;
+}
+```
+
+---
+
+## 🚀 Flask Backend (E-Commerce Application)
+
+A full-featured e-commerce platform built with Flask.
+
+### Backend Features
+
+- **Customer Portal** - Browse products and place orders
+- **Admin Dashboard** - Manage products, inventory, and orders
+- **Secure Authentication** - Password-hashed admin login
+- **Database** - SQLite with proper schema
+- **Responsive Design** - Bootstrap 5 UI
+- **Security** - CSRF protection, SQL injection prevention, password hashing
+
+### Backend Requirements
 
 - Python 3.8+
 - Flask 3.0.0
 - python-dotenv
 
-## 🔧 Installation
+### Backend Installation
 
-1. **Clone the repository**:
 ```bash
+# 1. Clone repository
 git clone <repo-url>
 cd HK-EXPORTS
-```
 
-2. **Create virtual environment**:
-```bash
+# 2. Create virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
 
-3. **Install dependencies**:
-```bash
+# 3. Install dependencies
 pip install -r requirements.txt
-```
 
-4. **Setup environment variables**:
-```bash
+# 4. Setup environment
 cp .env.example .env
-# Edit .env with your configuration
-```
 
-5. **Run the application**:
-```bash
+# 5. Run application
 python run.py
 ```
 
-The app will be available at `http://localhost:5000`
+Visit `http://localhost:5000`
 
-## 🏠 Default Admin Credentials
+### Default Admin Credentials
 
 - **Username**: `admin`
 - **Password**: `hk123`
 
-⚠️ **IMPORTANT**: Change these credentials in production!
+⚠️ **Change these in production!**
 
-## 📁 Project Structure
+### Backend Structure
 
 ```
-HK-EXPORTS/
 ├── app/
-│   ├── __init__.py           # Application factory
-│   ├── config.py             # Configuration settings
-│   ├── database.py           # Database management
-│   ├── routes.py             # All routes (main, auth, admin)
+│   ├── __init__.py
+│   ├── config.py
+│   ├── database.py
+│   ├── routes.py
 │   ├── templates/
-│   │   ├── base.html         # Base template
-│   │   ├── index.html        # Home page
+│   │   ├── base.html
+│   │   ├── index.html
 │   │   ├── product_detail.html
-│   │   ├── login.html        # Admin login
-│   │   └── admin.html        # Admin dashboard
+│   │   ├── login.html
+│   │   └── admin.html
 │   └── static/
-│       ├── css/
-│       │   └── style.css     # Custom styles
-│       └── js/
-│           └── main.js       # Client-side scripts
-├── run.py                    # Entry point
+│       ├── css/style.css
+│       └── js/main.js
+├── run.py
 ├── requirements.txt
-├── .env.example
-└── README.md
+└── .env.example
 ```
 
-## 🗄️ Database Schema
+### Database Schema
 
-### Products Table
-- `id`: Primary key
-- `name`: Product name (unique)
-- `category`: Product category
-- `price`: Product price (must be > 0)
-- `stock`: Stock quantity (must be >= 0)
-- `description`: Product description
-- `created_at`: Timestamp
+**Products**
+- id, name, category, price, stock, description, created_at
 
-### Orders Table
-- `id`: Primary key
-- `buyer_name`: Customer name
-- `buyer_email`: Customer email
-- `item_id`: Foreign key to products
-- `quantity`: Order quantity (must be > 0)
-- `order_date`: Order timestamp
-- `status`: pending/processing/completed/cancelled
+**Orders**
+- id, buyer_name, buyer_email, item_id, quantity, order_date, status
 
-### Audit Log Table
-- `id`: Primary key
-- `action`: Action description
-- `details`: Action details
-- `timestamp`: When action occurred
+**Audit Log**
+- id, action, details, timestamp
+
+### Admin Features
+
+✅ Product Management (Add, Edit, Delete)
+✅ Order Management & Status Tracking
+✅ Dashboard Statistics
+✅ Inventory Monitoring
+
+### Customer Features
+
+✅ Browse Products
+✅ View Product Details
+✅ Place Orders
+✅ Real-time Pricing
+
+---
 
 ## 🔐 Security Features
 
-- ✅ Password hashing with Werkzeug
+- ✅ Password hashing (Werkzeug)
 - ✅ Session-based authentication
-- ✅ CSRF protection via Flask
+- ✅ CSRF protection
 - ✅ HTTP-only secure cookies
-- ✅ SQL injection prevention (parameterized queries)
-- ✅ Input validation on all forms
-- ✅ Error handling and logging
-- ✅ Database foreign key constraints
+- ✅ SQL injection prevention
+- ✅ Input validation
+- ✅ Error handling & logging
 
-## 📊 Admin Features
+---
 
-1. **Product Management**:
-   - Add new products
-   - Edit existing products
-   - Delete products
-   - Monitor stock levels
+## 📊 API Endpoints
 
-2. **Order Management**:
-   - View all orders
-   - Update order status
-   - Track customer details
+### Public Routes
+- `GET /` - Home with products
+- `GET /product/<id>` - Product details
+- `POST /place_order` - Place order
 
-3. **Dashboard Statistics**:
-   - Total products count
-   - Total inventory
-   - Total orders
-   - Units sold
+### Auth Routes
+- `GET/POST /login` - Admin login
+- `GET /logout` - Logout
 
-## 🎯 Customer Features
+### Admin Routes (Protected)
+- `GET /admin` - Dashboard
+- `POST /admin/product/add` - Add product
+- `POST /admin/product/<id>/edit` - Edit product
+- `POST /admin/product/<id>/delete` - Delete product
+- `POST /admin/order/<id>/status` - Update status
 
-1. **Browse Products**: View all available products with details
-2. **Product Details**: See full product information
-3. **Place Orders**: Easy order placement with quantity selection
-4. **Real-time Pricing**: Automatic price calculation
+---
 
-## 🚀 Deployment
+## 🚀 Production Deployment
 
-For production deployment:
-
-1. **Update `.env`**:
+### Environment Setup
 ```
 FLASK_ENV=production
 FLASK_DEBUG=False
@@ -167,77 +219,105 @@ SECRET_KEY=<generate-strong-key>
 ADMIN_PASS=<strong-password>
 ```
 
-2. **Use production WSGI server**:
+### Using Gunicorn
 ```bash
 pip install gunicorn
 gunicorn -w 4 -b 0.0.0.0:5000 run:app
 ```
 
-3. **Enable HTTPS**: Use Nginx/Apache reverse proxy with SSL
+### Deploy to Render
 
-## � Deploy to Render or Railway
-
-### Render
-1. Create a new Web Service in Render.
-2. Connect your Git repository.
-3. Use the default branch `main`.
-4. For the build command, use:
+1. Create Web Service in Render
+2. Connect Git repository
+3. Build command:
 ```bash
 pip install -r requirements.txt
 ```
-5. For the start command, use:
+4. Start command:
 ```bash
 gunicorn run:app --bind 0.0.0.0:$PORT --workers 2 --log-level info
 ```
-6. Set environment variables in Render dashboard:
+5. Set environment variables:
    - `SECRET_KEY`
    - `ADMIN_USER`
    - `ADMIN_PASS`
    - `DATABASE_PATH=hk_exports.db`
 
-### Railway
-1. Connect your Git repository in Railway.
-2. Railway will detect a Python project automatically.
-3. Add a `Procfile` with:
+### Deploy to Railway
+
+1. Connect Git repo in Railway
+2. Add `Procfile`:
 ```bash
 web: gunicorn run:app --bind 0.0.0.0:$PORT --workers 2 --log-level info
 ```
-4. Set environment variables in Railway project settings:
-   - `SECRET_KEY`
-   - `ADMIN_USER`
-   - `ADMIN_PASS`
-   - `DATABASE_PATH=hk_exports.db`
+3. Set environment variables in Railway dashboard
 
-## �📝 API Endpoints
+---
 
-### Public Routes
-- `GET /` - Home page with products
-- `GET /product/<id>` - Product detail
-- `POST /place_order` - Place an order
+## 🛠️ Technologies
 
-### Auth Routes
-- `GET/POST /login` - Admin login
-- `GET /logout` - Admin logout
+**Frontend**
+- HTML5, CSS3, Vanilla JavaScript
+- Font Awesome Icons
+- Responsive Design (Grid, Flexbox)
 
-### Admin Routes (Protected)
-- `GET /admin` - Admin dashboard
-- `POST /admin/product/add` - Add product
-- `POST /admin/product/<id>/edit` - Edit product
-- `POST /admin/product/<id>/delete` - Delete product
-- `POST /admin/order/<id>/status` - Update order status
+**Backend**
+- Python, Flask
+- SQLite Database
+- Bootstrap 5
+- Werkzeug (Password Hashing)
+
+---
+
+## 📱 Browser Support
+
+- ✅ Chrome/Edge (Latest)
+- ✅ Firefox (Latest)
+- ✅ Safari (Latest)
+- ✅ Mobile browsers
+
+---
+
+## 📋 Responsive Breakpoints
+
+- Desktop: 1024px+
+- Tablet: 768px - 1023px
+- Mobile: Below 768px
+- Small Mobile: Below 480px
+
+---
+
+## 📈 Future Enhancements
+
+- [ ] Shopping cart functionality
+- [ ] User accounts & authentication
+- [ ] Payment gateway integration
+- [ ] Order tracking system
+- [ ] Blog section
+- [ ] Customer testimonials
+- [ ] Live chat support
+- [ ] Multi-language support
+- [ ] Email notifications
+- [ ] Advanced analytics
+
+---
 
 ## 🤝 Contributing
 
-Feel free to submit issues and enhancement requests!
+Feel free to fork, modify, and enhance this project!
+
+---
+
+## 📞 Support
+
+For issues or questions, please open an GitHub issue.
+
+---
 
 ## 📄 License
 
 All rights reserved © 2026 HK Exports
 
-## 📞 Support
-
-For support, contact the development team.
-
 ---
 
-**Happy selling! 🦐🐟**
+**Bringing Premium Seafood to Global Markets 🦐🐟**
